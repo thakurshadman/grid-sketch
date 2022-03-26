@@ -1,19 +1,1 @@
-.glow::before, .glow::after{
-    content: '';
-    position: absolute;
-    left:0px;
-    top: 0px;
-    background:  linear-gradient(90deg,#00ff66,  #00ffff,  #ff00ff, #ff0099, #899fff);
-    rotate: 90deg;
-    background-size: 900%;
-    width: 100%;
-    aspect-ratio: 1;
-    z-index: -5;
-    animation: change 30s linear infinite;
-}
 
-@keyframes change{
-    0% { background-position: 0 0; }
-    50% { background-position: 900% 0; }
-    100% { background-position: 0 0; }
-}

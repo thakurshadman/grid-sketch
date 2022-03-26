@@ -1,4 +1,4 @@
-let modes = {'Default':true, 'Color':false, 'Rainbow':false, 'Eraser':false, 'Glow': false};
+let modes = {'Default':true, 'Color':false, 'Rainbow':false, 'Eraser':false};
 let mouseDown = false;
 const defaultGrid = 50;
 var gridCount = defaultGrid; 
@@ -30,7 +30,7 @@ colorBtn.oninput = function(){
 btnGroup.append(colorBtn);
 
 
-const buttonLabels = ['Rainbow', 'Eraser', 'Glow'];//----------------Rainbow, Eraser, Glow buttons
+const buttonLabels = ['Rainbow', 'Eraser'];//----------------Rainbow, Eraser, buttons
 buttonLabels.forEach((button)=>{
     const btn = document.createElement('button');
     btn.textContent = `${button}`;
@@ -104,7 +104,7 @@ gridContainer.style.userSelect = 'none';
 
 gridContainer.addEventListener('mousedown', (e) => {//------------------------------------Grid Events
     mouseDown = true;
-    if (e.target.className == 'gridChild glow'){
+    if (e.target.className == 'gridChild'){
         e.target.style.backgroundColor = backgroundColor(modes);
     }
 })
@@ -127,9 +127,6 @@ function backgroundColor(modes){ //---------------------------------------color 
     else if (modes['Eraser']){
         return 'white';
     }
-    else if (modes['Glow']){
-        return 'transparent';
-    }
     else if (modes['Color']){
         return colorBtn.value;
     }
@@ -140,7 +137,7 @@ function buildGrid(gridCount){ //-----------------------------------------------
     gridContainer.style.gridTemplateColumns = `repeat(${gridCount}, 1fr)`;
     for (var i = 0; i < (gridCount * gridCount); i++) { 
         const gridChild = document.createElement('div');
-        gridChild.className = 'gridChild glow';
+        gridChild.className = 'gridChild';
         gridChild.style.position = 'relative';
         gridChild.style.backgroundColor = `white`;
         gridChild.style.aspectRatio = '1';
