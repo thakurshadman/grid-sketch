@@ -9,11 +9,11 @@
     width: 100%;
     aspect-ratio: 1;
     z-index: -5;
-    animation: change 20s linear infinite;
+    animation: change 30s linear infinite;
 }
 
 @keyframes change{
     0% { background-position: 0 0; }
-    50% { background-position: 400% 0; }
+    50% { background-position: 900% 0; }
     100% { background-position: 0 0; }
 }

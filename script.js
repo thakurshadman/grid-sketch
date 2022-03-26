@@ -1,4 +1,4 @@
-let modes = {'Default':false, 'Color':false, 'Rainbow':true, 'Eraser':false, 'Glow': false};
+let modes = {'Default':true, 'Color':false, 'Rainbow':false, 'Eraser':false, 'Glow': false};
 let mouseDown = false;
 const defaultGrid = 50;
 var gridCount = defaultGrid; 
@@ -17,8 +17,21 @@ btnGroup.style.display = 'flex';
 btnGroup.style.flexDirection = 'column';
 btnGroup.style.gap = '1.5rem';
 
-const buttons = ['Color', 'Rainbow', 'Eraser', 'Glow'];//----------------colormode buttons
-buttons.forEach((button)=>{
+const colorBtn = document.createElement('input');//--------------------------colorBtn
+colorBtn.setAttribute('type','color');
+stylizeButton(colorBtn);
+colorBtn.style.padding = '0';
+colorBtn.style.height = '42px';
+
+colorBtn.oninput = function(){
+    Object.keys(modes).forEach(mode => modes[mode] = false);
+    modes['Color'] = true;
+}
+btnGroup.append(colorBtn);
+
+
+const buttonLabels = ['Rainbow', 'Eraser', 'Glow'];//----------------Rainbow, Eraser, Glow buttons
+buttonLabels.forEach((button)=>{
     const btn = document.createElement('button');
     btn.textContent = `${button}`;
     stylizeButton(btn);
@@ -104,7 +117,7 @@ parent.append(gridContainer);
 body.append(parent);
 
 
-function backgroundColor(modes){
+function backgroundColor(modes){ //---------------------------------------color to show on grid children on mouse actions
     if (modes['Default']){
         return 'black';
     }
@@ -116,6 +129,9 @@ function backgroundColor(modes){
     }
     else if (modes['Glow']){
         return 'transparent';
+    }
+    else if (modes['Color']){
+        return colorBtn.value;
     }
 }
 
@@ -138,13 +154,13 @@ function buildGrid(gridCount){ //-----------------------------------------------
     }
 }
 
-function removeGridChildren(){
+function removeGridChildren(){ //-------------------------------------------remove children before creating new n x n grid
     while(gridContainer.hasChildNodes()){
         gridContainer.removeChild(gridContainer.lastChild);
     }
 }
 
-function stylizeButton(btn){
+function stylizeButton(btn){ //---------------------------styling buttons in btnGRoup
     btn.style.padding = '10px';
     btn.style.width = '20rem';
     btn.style.border = '3px solid black';
