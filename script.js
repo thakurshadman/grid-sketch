@@ -1,7 +1,7 @@
 let modes = {'Default':false, 'Color':false, 'Rainbow':true, 'Eraser':false, 'Glow': false};
 let mouseDown = false;
-const defultGrid = 50;
-var gridCount = defultGrid; 
+const defaultGrid = 50;
+var gridCount = defaultGrid; 
 
 const body = document.body; //----------------------------------------------body
 body.style.display = 'flex';
@@ -12,36 +12,45 @@ body.style.margin = '0px';
 body.style.boxSizing = 'border-box';
 body.style.height = '100vh';
 
-const btnGroup = document.createElement('div'); //--------------------------Buttons
+const btnGroup = document.createElement('div'); //--------------------------buttons container
 btnGroup.style.display = 'flex';
 btnGroup.style.flexDirection = 'column';
 btnGroup.style.gap = '1.5rem';
 
-const buttons = ['Color', 'Rainbow', 'Eraser', 'Glow'];
+const buttons = ['Color', 'Rainbow', 'Eraser', 'Glow'];//----------------colormode buttons
 buttons.forEach((button)=>{
     const btn = document.createElement('button');
-    btn.className = `btn ${button}`;
     btn.textContent = `${button}`;
-    btn.style.padding = '10px';
-    btn.style.width = '20rem'
-    btn.style.border = '3px solid black'
-    btnGroup.append(btn);
+    stylizeButton(btn);
     btn.addEventListener('click',()=>{
         Object.keys(modes).forEach(mode => modes[mode] = false);
         modes[btn.textContent] = true;
     })
+    btnGroup.append(btn);
+})
+const clrBtn = document.createElement('button'); //--------------------------clear button
+stylizeButton(clrBtn);
+clrBtn.textContent = 'Clear';
+clrBtn.addEventListener('click',()=>{
+    gridChildren = document.querySelectorAll('.gridChild')
+    gridChildren.forEach(gridChild => {
+        gridChild.style.backgroundColor = 'white';        
+    });
 })
 
-const sliderContainer = document.createElement('div'); //------------------------------Slider
+btnGroup.append(clrBtn);
+
+
+const sliderContainer = document.createElement('div'); //------------------------------Slider Container
 sliderContainer.style.display = 'flex'
 sliderContainer.style.flexDirection = 'column';
 sliderContainer.style.alignItems = 'center';
 
-const sliderLabel = document.createElement('p');
+const sliderLabel = document.createElement('p');//------------------------SliderLabel: 50 x 50
 sliderLabel.textContent = '50 x 50'
 sliderContainer.append(sliderLabel);
 
-const slider = document.createElement('input');
+const slider = document.createElement('input');//--------------------------Slider
 slider.setAttribute('type','range');
 slider.setAttribute('min','1');
 slider.setAttribute('max', '100');
@@ -49,7 +58,7 @@ slider.setAttribute('value','50');
 slider.style.accentColor = 'black';
 slider.style.width = '20rem';
 
-slider.oninput = function() {
+slider.oninput = function() {//--------------------------Slider input function
     sliderLabel.textContent = this.value + ' x ' + this.value;
     gridCount = Number(this.value);
     removeGridChildren();
@@ -73,16 +82,16 @@ title.innerText = "Etch - A - Sketch";
 title.style.fontSize = '3em';
 parent.append(title);
 
-const gridContainer = document.createElement('div'); //------------------------------------Grid
+const gridContainer = document.createElement('div'); //------------------------------------Grid Container
 gridContainer.className = 'gridContainer';
 gridContainer.style.display = 'grid';
 gridContainer.style.border = '5px solid black';
-gridContainer.style.width = '400px';
+gridContainer.style.width = '500px';
 gridContainer.style.userSelect = 'none';
-gridContainer.addEventListener('mousedown', (e) => {
+
+gridContainer.addEventListener('mousedown', (e) => {//------------------------------------Grid Events
     mouseDown = true;
-    if (e.target.className == 'gridChild'){
-        console.log(e.target);
+    if (e.target.className == 'gridChild glow'){
         e.target.style.backgroundColor = backgroundColor(modes);
     }
 })
@@ -111,11 +120,12 @@ function backgroundColor(modes){
 }
 
 
-function buildGrid(gridCount){
+function buildGrid(gridCount){ //------------------------------------------------build & append Grid children
     gridContainer.style.gridTemplateColumns = `repeat(${gridCount}, 1fr)`;
-    for (var i = 0; i < (gridCount * gridCount); i++) { //------------------------------------------------Grid Children
+    for (var i = 0; i < (gridCount * gridCount); i++) { 
         const gridChild = document.createElement('div');
-        gridChild.className = 'gridChild';
+        gridChild.className = 'gridChild glow';
+        gridChild.style.position = 'relative';
         gridChild.style.backgroundColor = `white`;
         gridChild.style.aspectRatio = '1';
         gridChild.i = i.toString();
@@ -132,4 +142,10 @@ function removeGridChildren(){
     while(gridContainer.hasChildNodes()){
         gridContainer.removeChild(gridContainer.lastChild);
     }
+}
+
+function stylizeButton(btn){
+    btn.style.padding = '10px';
+    btn.style.width = '20rem';
+    btn.style.border = '3px solid black';
 }
