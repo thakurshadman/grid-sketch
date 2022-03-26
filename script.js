@@ -1,6 +1,6 @@
-let modes = {'Default':false, 'Color':false, 'Rainbow':true, 'Eraser':false};
+let modes = {'Default':false, 'Color':false, 'Rainbow':true, 'Eraser':false, 'Glow': false};
 let mouseDown = false;
-const defultGrid = 16;
+const defultGrid = 50;
 var gridCount = defultGrid; 
 
 const body = document.body; //----------------------------------------------body
@@ -17,7 +17,7 @@ btnGroup.style.display = 'flex';
 btnGroup.style.flexDirection = 'column';
 btnGroup.style.gap = '1.5rem';
 
-const buttons = ['Color', 'Rainbow', 'Eraser', 'Glow', 'Clear' ]
+const buttons = ['Color', 'Rainbow', 'Eraser', 'Glow'];
 buttons.forEach((button)=>{
     const btn = document.createElement('button');
     btn.className = `btn ${button}`;
@@ -26,6 +26,10 @@ buttons.forEach((button)=>{
     btn.style.width = '20rem'
     btn.style.border = '3px solid black'
     btnGroup.append(btn);
+    btn.addEventListener('click',()=>{
+        Object.keys(modes).forEach(mode => modes[mode] = false);
+        modes[btn.textContent] = true;
+    })
 })
 
 const sliderContainer = document.createElement('div'); //------------------------------Slider
@@ -34,7 +38,7 @@ sliderContainer.style.flexDirection = 'column';
 sliderContainer.style.alignItems = 'center';
 
 const sliderLabel = document.createElement('p');
-sliderLabel.textContent = '1 x 1'
+sliderLabel.textContent = '50 x 50'
 sliderContainer.append(sliderLabel);
 
 const slider = document.createElement('input');
@@ -45,8 +49,13 @@ slider.setAttribute('value','50');
 slider.style.accentColor = 'black';
 slider.style.width = '20rem';
 
+slider.oninput = function() {
+    sliderLabel.textContent = this.value + ' x ' + this.value;
+    gridCount = Number(this.value);
+    removeGridChildren();
+    buildGrid(gridCount);
+} 
 
-console.log(gridCount);
 sliderContainer.append(slider);
 btnGroup.append(sliderContainer);
 body.append(btnGroup);
@@ -79,10 +88,9 @@ gridContainer.addEventListener('mousedown', (e) => {
 })
 gridContainer.addEventListener('mouseup', () => {
     mouseDown = false;
-    
   })
-buildGrid(gridCount);
 
+buildGrid(gridCount);
 parent.append(gridContainer);
 body.append(parent);
 
@@ -95,16 +103,13 @@ function backgroundColor(modes){
         return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
     }
     else if (modes['Eraser']){
-        return 'white'
+        return 'white';
+    }
+    else if (modes['Glow']){
+        return 'transparent';
     }
 }
 
-slider.oninput = function() {
-    sliderLabel.textContent = this.value + ' x ' + this.value;
-    gridCount = Number(this.value);
-    removeGridChildren();
-    buildGrid(gridCount);
-} 
 
 function buildGrid(gridCount){
     gridContainer.style.gridTemplateColumns = `repeat(${gridCount}, 1fr)`;
