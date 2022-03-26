@@ -1,4 +1,4 @@
-const gridCount = 50;
+const gridCount = 100;
 var id = 0;
 let mouseDown = false;
 
@@ -14,7 +14,7 @@ body.style.height = '100vh';
 const btnGroup = document.createElement('div'); //--------------------------Buttons
 btnGroup.style.display = 'flex';
 btnGroup.style.flexDirection = 'column';
-btnGroup.style.gap = '2rem';
+btnGroup.style.gap = '1.5rem';
 
 const buttons = ['Color', 'Rainbow', 'Eraser', 'Glow', 'Clear' ]
 buttons.forEach((button)=>{
@@ -27,7 +27,27 @@ buttons.forEach((button)=>{
     btnGroup.append(btn);
 })
 
+const sliderContainer = document.createElement('div'); //------------------------------Slider
+sliderContainer.style.display = 'flex'
+sliderContainer.style.flexDirection = 'column';
+sliderContainer.style.alignItems = 'center';
+
+const sliderLabel = document.createElement('p');
+sliderLabel.textContent = '1 x 1'
+sliderContainer.append(sliderLabel);
+
+const slider = document.createElement('input');
+slider.setAttribute('type','range');
+slider.setAttribute('min','1');
+slider.setAttribute('max', '100');
+slider.setAttribute('value','50');
+slider.style.accentColor = 'black';
+slider.style.width = '20rem';
+
+sliderContainer.append(slider);
+btnGroup.append(sliderContainer);
 body.append(btnGroup);
+
 
 const parent = document.createElement('div'); //-----------------------------------Flex Container for grid and title
 parent.style.display = 'flex';
